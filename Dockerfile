@@ -1,13 +1,14 @@
 # aws 에서 제공하는 lambda base image (python)
-FROM amazon/aws-lambda-python:3.10
+FROM amazon/aws-lambda-python:3.9
 
 # optional : ensure that pip is up to data
-RUN /var/lang/bin/python3.10 -m pip install --upgrade pip
+RUN /var/lang/bin/python3.9 -m pip install --upgrade pip
 
 # install git 
 RUN yum install git -y
 
 # install epel-release, wgrib2
+RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum -y install wgrib
 
 # git clone
