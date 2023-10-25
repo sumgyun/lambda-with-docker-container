@@ -8,7 +8,6 @@ RUN /var/lang/bin/python3.10 -m pip install --upgrade pip
 RUN yum install git -y
 
 # install epel-release, wgrib2
-RUN yum -y install epel-release
 RUN yum -y install wgrib
 
 # git clone
