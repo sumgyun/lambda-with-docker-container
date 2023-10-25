@@ -17,7 +17,9 @@ def lambda_handler(event, context):
     # 변경된 시간을 출력하거나 다른 작업을 수행합니다.
     print("현재 시간 (KST):", current_time_kst)
     
-    aws s3 cp --no-sign-request s3://noaa-gfs-bdp-pds/gfs.${date}/${UTC}/atmos/gfs.t${UTC}z.pgrb2.0p25.f0$i ./tmp/
+    download = 'aws s3 cp --no-sign-request s3://noaa-gfs-bdp-pds/gfs.${date}/${UTC}/atmos/gfs.t${UTC}z.pgrb2.0p25.f0$i ./tmp/'
+
+    subprocess.run(download, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, executable="/bin/bash")
 
     # /tmp/ 디렉토리 경로
     tmp_dir = '/tmp/'
