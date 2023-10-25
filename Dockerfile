@@ -21,4 +21,4 @@ RUN pip install -r lambda-with-docker-container/requirements.txt
 RUN cp lambda-with-docker-container/lambda_function.py /var/task/
 
 # lambda_function.handler 실행
-CMD ["lambda_function.handler"]
+CMD ["lambda_function.lambda_handler"]
