@@ -1,9 +1,22 @@
 import json
 import subprocess
-import wget
+import pytz
+from datetime import datetime
 
 def lambda_handler(event, context):
     # TODO implement
+
+    
+    # 현재 시간을 가져옵니다.
+    current_time = datetime.now()
+
+    # 타임존을 변경합니다.
+    kst_timezone = pytz.timezone('Asia/Seoul')
+    current_time_kst = current_time.astimezone(kst_timezone)
+
+    # 변경된 시간을 출력하거나 다른 작업을 수행합니다.
+    print("현재 시간 (KST):", current_time_kst)
+    
     #command = 'ls -l'
     command = 'yum list installed | grep wgrib2'
 
