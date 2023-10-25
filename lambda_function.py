@@ -4,8 +4,8 @@ import wget
 
 def lambda_handler(event, context):
     # TODO implement
-    command = 'ls -l'
-    # cmd = 'yum list installed | grep wgrib2'
+    #command = 'ls -l'
+    command = 'yum list installed | grep wgrib2'
 
     # subprocess.run() 함수를 사용하여 명령어 실행
     result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
