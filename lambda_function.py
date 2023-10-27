@@ -4,6 +4,15 @@ from datetime import datetime
 import subprocess
 
 def lambda_handler(event, context):
+
+    command = 'echo "Hello, Lambda!"'
+
+    # subprocess를 사용하여 명령 실행
+    result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    # 결과 출력
+    print(f"명령 실행 결과 코드: {result.returncode}")
+    print(f"표준 출력:\n{result.stdout}")
+    print(f"표준 에러:\n{result.stderr}")
     
     current_time = datetime.now() # currernt time
     print("현재 시간 (UTC):", current_time)
@@ -17,10 +26,12 @@ def lambda_handler(event, context):
     s3 = boto3.client('s3')
     aws_gfs_bucket = 'noaa-gfs-bdp-pds' # NOAA Global Forecast System (GFS)
     datalake_bucket = 'cf-templates-12s7rta9jx4zs-us-east-1' # example
+
     for i in range(0, cycle_18):
         num = '{:02d}'.format(i)
-        object_name = 'gfs.'+date+'/'+str(UTC)+'/atmos/gfs.t'+str(UTC)+'z.pgrb2.0p25.f0'+num
         tmp_dir = '/tmp/'
+
+        object_name = 'gfs.'+date+'/'+str(UTC)+'/atmos/gfs.t'+str(UTC)+'z.pgrb2.0p25.f0'+num
         file_name = 'gfs.t'+str(UTC)+'z.pgrb2.0p25.f0'+num
         s3.download_file(aws_gfs_bucket, object_name, tmp_dir+file_name)
 
