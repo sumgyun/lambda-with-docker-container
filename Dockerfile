@@ -11,14 +11,12 @@ RUN yum install git -y
 RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum -y install wgrib
 
-# wgrib을 Lambda 함수에 포함
-COPY wgrib /var/task/
-
-# Lambda 함수의 /var/task/ 디렉토리로 이동
-WORKDIR /var/task/
-
 # optional : ensure that pip is up to date
 RUN /var/lang/bin/python3.9 -m pip install --upgrade pip
+
+# Lambda 레이어에 wgrib 추가
+COPY wgrib /opt/
+RUN chmod +x /opt/wgrib
 
 # git clone
 RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git
