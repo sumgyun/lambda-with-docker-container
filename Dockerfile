@@ -12,7 +12,7 @@ RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.n
 RUN yum -y install wgrib
 
 # 현재 디렉토리의 wgrib 파일을 Lambda 레이어에 추가
-COPY /bin/wgrib2 /var/task/
+COPY ./wgrib2 /var/task/
 RUN chmod +x /var/task/wgrib2
 
 # git clone
