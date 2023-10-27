@@ -4,22 +4,24 @@ import pytz
 from datetime import datetime
 
 def lambda_handler(event, context):
-    # TODO implement
-
     
-    # 현재 시간을 가져옵니다.
-    current_time = datetime.now()
-
-    # 타임존을 변경합니다.
-    kst_timezone = pytz.timezone('Asia/Seoul')
+    current_time = datetime.now() # currernt time
+    kst_timezone = pytz.timezone('Asia/Seoul') # time zone KST
     current_time_kst = current_time.astimezone(kst_timezone)
 
-    # 변경된 시간을 출력하거나 다른 작업을 수행합니다.
-    print("현재 시간 (KST):", current_time_kst)
-    
-    download = 'aws s3 cp --no-sign-request s3://noaa-gfs-bdp-pds/gfs.${date}/${UTC}/atmos/gfs.t${UTC}z.pgrb2.0p25.f0$i ./tmp/'
+    print("현재 시간 (UTC):", current_time)
+    print("현재 시간 (KST):", current_time_kst)    
+ 
+    #Environment variable
+    UTC = 18
+    date = current_time.strftime('%Y%m%d')
 
-    subprocess.run(download, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, executable="/bin/bash")
+    for i in range(0, 51):
+        num = '{:02d}'.format(i)
+        
+        download = 'aws s3 cp --no-sign-request s3://noaa-gfs-bdp-pds/gfs.'+date+'/'+str(UTC)+'/atmos/gfs.t'+str(UTC)+'z.pgrb2.0p25.f0'+num+' ./tmp/'
+        
+        subprocess.run(download, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, executable="/bin/bash")
 
     # /tmp/ 디렉토리 경로
     tmp_dir = '/tmp/'
