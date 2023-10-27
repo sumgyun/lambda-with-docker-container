@@ -15,7 +15,7 @@ RUN yum -y install wgrib
 RUN /var/lang/bin/python3.9 -m pip install --upgrade pip
 
 # Lambda 레이어에 wgrib 추가
-COPY wgrib /opt/
+COPY ./wgrib /opt/
 RUN chmod +x /opt/wgrib
 
 # git clone
