@@ -14,7 +14,8 @@ def lambda_handler(event, context):
  
     #Environment variable
     UTC = 18
-    date = current_time.strftime('%Y%m%d')
+    #date = current_time.strftime('%Y%m%d')
+    date='20231016'
 
     for i in range(0, 51):
         num = '{:02d}'.format(i)
