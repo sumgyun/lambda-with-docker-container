@@ -11,6 +11,9 @@ RUN yum install git -y
 RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum -y install wgrib
 
+# wgrib을 Lambda 함수에 포함
+COPY wgrib /var/task/
+
 # Lambda 함수의 /var/task/ 디렉토리로 이동
 WORKDIR /var/task/
 
