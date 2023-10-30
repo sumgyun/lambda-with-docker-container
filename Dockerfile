@@ -34,8 +34,7 @@ RUN wget ftp://ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/wgrib2.tgz.v3.1.3 -O wgrib2.t
     mv wgrib2 /usr/local/bin/wgrib2
 
 # Clone the specified GitHub repository
-RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git
-COPY . ${FUNCTION_DIR}
+RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git ${FUNCTION_DIR}
 
 # Install dependencies from requirements.txt
 RUN pip install --target ${FUNTION_DIR} -r ${FUNCTION_DIR}/lambda-with-docker-container/requirements.txt
