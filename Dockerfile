@@ -24,7 +24,7 @@ RUN yum -y install wgrib
 RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git
 
 # install packages
-RUN pip install -r lambda-with-docker-container/requirements.txt
+RUN pip3 install -r lambda-with-docker-container/requirements.txt
 
 # Lambda Runtime Interface Emulator를 추가하고 보다 간단한 로컬 실행을 위해 ENTRYPOINT에서 스크립트 사용
 COPY ./entry_script.sh /entry_script.sh
