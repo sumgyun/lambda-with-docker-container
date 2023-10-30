@@ -1,28 +1,52 @@
-# aws 에서 제공하는 lambda base image (python)
-FROM amazon/aws-lambda-python:3.9
+# Define custom function directory
+ARG FUNCTION_DIR="/function"
 
-# optional : ensure that pip is up to data
-RUN /var/lang/bin/python3.9 -m pip install --upgrade pip
+FROM python:3.11 as build-image
 
-# install git 
-RUN yum install git -y
+RUN apt-get update && \
+  apt-get install -y \
+  g++ \
+  make \
+  cmake \
+  unzip \
+  libcurl4-openssl-dev \
+  git
 
-# install epel-release, wgrib2
-RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-RUN yum -y install wgrib
+# Include global arg in this stage of the build
+ARG FUNCTION_DIR
 
-# 현재 디렉토리의 wgrib 파일을 Lambda 레이어에 추가
-COPY ./wgrib2 /var/task/
-RUN chmod +x /var/task/wgrib2
+# Copy function code
+RUN mkdir -p ${FUNCTION_DIR}
+COPY . ${FUNCTION_DIR}
 
-# git clone
+# Install the function's dependencies
+RUN pip install -m pip install \
+    --target ${FUNCTION_DIR} \
+    --no-cache-dir \
+        awslambdaric \
+    -r ${FUNCTION_DIR}/requirements.txt
+
+# Git Clone
 RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git
 
-# install packages
-RUN pip install -r lambda-with-docker-container/requirements.txt
+# Unstall epel-release
+RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-lastest-7.roarch.rpm
 
-# git repository 의 lambda_function.py 를 Container 내부의 /var/task/ 로 이동
-RUN cp lambda-with-docker-container/lambda_function.py /var/task/
+# Install wgrib
+RUN yum install -y wgrib
 
-# lambda_function.handler 실행
-CMD ["lambda_function.lambda_handler"]
+# Use a slim version of the base Python image to reduce the final image size
+FROM python:3.11-slim
+
+# Include global arg in this stage of the build
+ARG FUNCTION_DIR
+# Set working directory to function root directory
+WORKDIR ${FUNCTION_DIR}
+
+# Copy in the built dependencies
+COPY --from=build-image ${FUNCTION_DIR} ${FUNCTION_DIR}
+
+# Set runtime interface client as default command for the container runtime
+ENTRYPOINT [ "/usr/local/bin/python", "-m", "awslambdaric" ]
+# Pass the name of the function handler as an argument to the runtime
+CMD [ "lambda_function.lambda_handler" ]
