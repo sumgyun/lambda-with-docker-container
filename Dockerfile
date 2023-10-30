@@ -18,7 +18,7 @@ RUN yum install -y libgl1-mesa-glx libglib2.0-0 python3-pip
 # 추가 패키지 설치
 RUN yum -y install git which
 RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-RUN yum -y install wgrib
+RUN yum -y install wgrib2
 
 # 확인
 RUN which wgrib2
