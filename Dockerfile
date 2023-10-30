@@ -29,9 +29,6 @@ RUN wget ftp://ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/wgrib2.tgz.v3.1.3 -O wgrib2.t
     make && \
     mv wgrib2 /usr/local/bin/wgrib2
 
-# Copy wgrib2 binary from the build stage
-COPY --from=build-image /usr/local/bin/wgrib2 /usr/local/bin/wgrib2
-
 # Clone the specified GitHub repository
 RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git
 
@@ -40,7 +37,6 @@ RUN pip install -r lambda-with-docker-container/requirements.txt
 
 # Use a slim version of the base Python image to reduce the final image size
 FROM python:3.11-slim
-
 
 # Include global arg in this stage of the build
 ARG FUNCTION_DIR
