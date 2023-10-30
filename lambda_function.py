@@ -22,6 +22,7 @@ def lambda_handler(event, context):
     #date = current_time.strftime('%Y%m%d')
     date='20231016'
     cycle_18 = 2
+    wgrib2_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'wgrib2') # wgrib2 exe path 
     
     s3 = boto3.client('s3')
     aws_gfs_bucket = 'noaa-gfs-bdp-pds' # NOAA Global Forecast System (GFS)
@@ -36,7 +37,8 @@ def lambda_handler(event, context):
         s3.download_file(aws_gfs_bucket, object_name, tmp_dir+file_name)
 
         wgrib_file_name = 'gfs.0p25.'+date+str(UTC)+'.f0'+num+'.grib2'
-        command = 'wgrib2 '+file_name+' -small_grib 123:132 30:40 '+wgrib_file_name
+        #command = 'wgrib2 '+file_name+' -small_grib 123:132 30:40 '+wgrib_file_name
+        command = f'{wgrib2_path} '+file_name+' -small_grib 123:132 30:40 '+wgrib_file_name
 
         subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         s3.upload_file(tmp_dir+wgrib_file_name, datalake_bucket, wgrib_file_name)
