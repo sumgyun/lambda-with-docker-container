@@ -1,4 +1,4 @@
-# Define custom function directory
+# Define custom function TION_DIR}
 ARG FUNCTION_DIR="/function"
 
 FROM python:3.11 as build-image
@@ -37,7 +37,7 @@ RUN wget ftp://ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/wgrib2.tgz.v3.1.3 -O wgrib2.t
 RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git
 
 # Install dependencies from requirements.txt
-RUN pip install --target ${FUNTION_DIR} -r lambda-with-docker-container/requirements.txt
+RUN pip install --target ${FUNTION_DIR} -r ${FUNCTION_DIR}/lambda-with-docker-container/requirements.txt
 
 # Use a slim version of the base Python image to reduce the final image size
 FROM python:3.11-slim
