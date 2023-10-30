@@ -27,19 +27,17 @@ RUN apt-get update && \
 ENV FC=gfortran
 ENV CC=gcc
 
-RUN mkdir -p /usr/local/bin/python/wgrib2
-
 # Download and build wgrib
 WORKDIR ${FUNCTION_DIR}
 RUN wget ftp://ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/wgrib2.tgz.v3.1.3 -O wgrib2.tgz && \
     tar -zxvf wgrib2.tgz && \
     cd grib2 && \
     make lib && \
-    mv wgrib2 /usr/local/bin/python/wgrib2 && \
-    ln -s /usr/local/bin/python/wgrib2 /usr/local/bin/wgrib2
+    mv wgrib2 ${FUNCTION_DIR}/wgrib2 && \
+    ln -s ${FUNCTION_DIR}/wgrib2 /usr/local/bin/wgrib2
 
 # Grant execute permission to wgrib2
-RUN chmod +x /usr/local/bin/python/wgrib2
+RUN chmod +xa /usr/local/bin/wgrib2
 
 # Clone the specified GitHub repository
 RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git
