@@ -8,7 +8,7 @@ RUN mkdir /var/task
 WORKDIR /var/task
 
 # labmda 런타임 이미지 복사
-COPY lambda.py /var/task/
+COPY lambda_funtion.py /var/task/
 COPY --from=lambda-image /var/runtime /var/runtime
 
 # python 및 빌드 종속성 설치
