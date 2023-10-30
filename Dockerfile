@@ -22,10 +22,9 @@ RUN yum -y install wgrib
 
 # 확인
 RUN which wgrib2
-RUN command -v wgrib2
 
 # give execute permission to wgrib2
-RUN chmod +x /usr/local/bin/wgrib2
+RUN chmod +x /usr/bin/wgrib2
 
 # git clone
 RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git
