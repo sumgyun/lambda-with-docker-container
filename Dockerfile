@@ -25,7 +25,8 @@ RUN which wgrib2
 
 # give execute permission to wgrib2
 RUN chmod +x /usr/bin/wgrib2
-COPY --from=lambda-image /usr/bin/wgrib2 /var/task/
+COPY --from=lambda-image /usr/bin/ /var/task
+WORKDIR /var/task/
 
 # git clone
 RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git
