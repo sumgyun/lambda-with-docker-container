@@ -3,15 +3,6 @@ ARG FUNCTION_DIR="/function"
 
 FROM python:3.11 as build-image
 
-RUN apt-get update && \
-  apt-get install -y \
-  g++ \
-  make \
-  cmake \
-  unzip \
-  libcurl4-openssl-dev \
-  git
-
 # Include global arg in this stage of the build
 ARG FUNCTION_DIR
 
@@ -20,25 +11,27 @@ RUN mkdir -p ${FUNCTION_DIR}
 COPY . ${FUNCTION_DIR}
 
 # Install the function's dependencies
-RUN python:3.11 -m pip install \
+RUN pip install \
     --target ${FUNCTION_DIR} \
-        awslambdaric \
-    -r ${FUNCTION_DIR}/requirements.txt
+        awslambdaric
 
-# Git Clone
+# Install additional packages
+RUN apt-get update && apt-get install -y \
+    wgrib \
+    git
+
+# Clone the specified GitHub repository
 RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git
 
-# Unstall epel-release
-RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-lastest-7.roarch.rpm
-
-# Install wgrib
-RUN yum install -y wgrib
+# Install dependencies from requirements.txt
+RUN pip install -r lambda-with-docker-container/requirements.txt
 
 # Use a slim version of the base Python image to reduce the final image size
 FROM python:3.11-slim
 
 # Include global arg in this stage of the build
 ARG FUNCTION_DIR
+
 # Set working directory to function root directory
 WORKDIR ${FUNCTION_DIR}
 
