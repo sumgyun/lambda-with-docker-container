@@ -21,7 +21,7 @@ RUN apt-get update && \
         git \
         build-essential \
         wget \
-        cmake \
+        make \
         gfortran
 
 ENV FC=gfortran
