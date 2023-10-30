@@ -21,7 +21,7 @@ RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.n
 RUN yum -y install wgrib
 
 # give execute permission to wgrib2
-RUN chmod +x /usr/bin/wgrib2
+RUN chmod +x /usr/local/bin/wgrib2
 
 # git clone
 RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git
