@@ -17,6 +17,9 @@ RUN pip install \
 
 RUN apt-get update
 RUN apt-get install -y git
+RUN apt-get install -y build-essential
+RUN apt-get install -y wget
+RUN apt-get install -y cmake
 
 # Download and build wgrib
 RUN wget ftp://ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/wgrib2.tgz.v3.1.3 -O wgrib2.tgz&& \
