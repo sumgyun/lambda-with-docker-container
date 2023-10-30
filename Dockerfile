@@ -13,7 +13,8 @@ COPY . ${FUNCTION_DIR}
 # Install the function's dependencies
 RUN pip install \
     --target ${FUNCTION_DIR} \
-        awslambdaric
+        awslambdaric \
+        boto3
 
 RUN apt-get update && \
     apt-get install -y \
@@ -36,11 +37,8 @@ RUN wget ftp://ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/wgrib2.tgz.v3.1.3 -O wgrib2.t
 # Clone the specified GitHub repository
 RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git
 
-# Copy requirements.txt
-COPY lambda-with-docker-container ${FUNCTION_DIR}/lambda-with-docker-container
-
 # Install dependencies from requirements.txt
-RUN pip install --target ${FUNTION_DIR} -r ${FUNCTION_DIR}/lambda-with-docker-container/requirements.txt
+RUN pip install -r lambda-with-docker-container/requirements.txt
 
 # Use a slim version of the base Python image to reduce the final image size
 FROM python:3.11-slim
