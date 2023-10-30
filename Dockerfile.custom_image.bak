@@ -1,4 +1,4 @@
-# Define custom function directory
+# Define custom function TION_DIR}
 ARG FUNCTION_DIR="/function"
 
 FROM python:3.11 as build-image
@@ -13,7 +13,8 @@ COPY . ${FUNCTION_DIR}
 # Install the function's dependencies
 RUN pip install \
     --target ${FUNCTION_DIR} \
-        awslambdaric
+        awslambdaric \
+        boto3
 
 RUN apt-get update && \
     apt-get install -y \
