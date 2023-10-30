@@ -1,63 +1,38 @@
-# Define custom function TION_DIR}
-ARG FUNCTION_DIR="/function"
+FROM public.ecr.aws/lambda/python:3.8 as lambda-image
 
-FROM python:3.11 as build-image
+# 사용할 환경 : Amazon Linux 2
+FROM amazonlinux:2
 
-# Include global arg in this stage of the build
-ARG FUNCTION_DIR
+# 작업 디렉토리 설정
+RUN mkdir /var/task
+WORKDIR /var/task
 
-# Copy function code
-RUN mkdir -p ${FUNCTION_DIR}
-COPY . ${FUNCTION_DIR}
+# labmda 런타임 이미지 복사
+COPY lambda.py /var/task/
+COPY --from=lambda-image /var/runtime /var/runtime
 
-# Install the function's dependencies
-RUN pip install \
-    --target ${FUNCTION_DIR} \
-        awslambdaric \
-        boto3
+# python 및 빌드 종속성 설치
+RUN amazon-linux-extras install -y python3
+RUN yum install -y libgl1-mesa-glx libglib2.0-0 python3-pip
 
-RUN apt-get update && \
-    apt-get install -y \
-        git \
-        build-essential \
-        wget \
-        cmake \
-        gfortran
+# 추가 패키지 설치
+RUN yum install -y git
+RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+RUN yum -y install wgrib
 
-ENV FC=gfortran
-ENV CC=gcc
-
-# Download and build wgrib
-WORKDIR ${FUNCTION_DIR}
-RUN wget ftp://ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/wgrib2.tgz.v3.1.3 -O wgrib2.tgz && \
-    tar -zxvf wgrib2.tgz && \
-    cd grib2 && \
-    make lib && \
-    mv wgrib2 ${FUNCTION_DIR}/wgrib2 && \
-    ln -s ${FUNCTION_DIR}/wgrib2 /usr/local/bin/wgrib2
-
-# Grant execute permission to wgrib2
-RUN chmod +x /usr/local/bin/wgrib2
-
-# Clone the specified GitHub repository
+# git clone
 RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git
 
-# Install dependencies from requirements.txt
+# install packages
 RUN pip install -r lambda-with-docker-container/requirements.txt
 
-# Use a slim version of the base Python image to reduce the final image size
-FROM python:3.11-slim
+# Lambda Runtime Interface Emulator를 추가하고 보다 간단한 로컬 실행을 위해 ENTRYPOINT에서 스크립트 사용
+COPY ./entry_script.sh /entry_script.sh
+ADD aws-lambda-rie /usr/local/bin/aws-lambda-rie
 
-# Include global arg in this stage of the build
-ARG FUNCTION_DIR
+RUN chmod 755 /entry_script.sh
+RUN chmod 755 /usr/local/bin/aws-lambda-rie
 
-# Set working directory to function root directory
-WORKDIR ${FUNCTION_DIR}
+ENTRYPOINT [ "/entry_script.sh" ]
 
-# Copy in the built dependencies
-COPY --from=build-image ${FUNCTION_DIR} ${FUNCTION_DIR}
-
-# Set runtime interface client as default command for the container runtime
-ENTRYPOINT [ "/usr/local/bin/python", "-m", "awslambdaric" ]
-# Pass the name of the function handler as an argument to the runtime
-CMD [ "lambda_function.lambda_handler" ]
+CMD ["lambda_function.lambda_handler"]
