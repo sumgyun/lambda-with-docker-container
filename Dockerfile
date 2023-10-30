@@ -33,8 +33,8 @@ RUN wget ftp://ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/wgrib2.tgz.v3.1.3 -O wgrib2.t
     tar -zxvf wgrib2.tgz && \
     cd grib2 && \
     make lib && \
-    mv wgrib2 /usr/local/bin/wgrib2 && \
-    ln -s /usr/local/bin/wgrib2 /usr/local/bin/python/wgrib2
+    mv wgrib2 /usr/local/bin/python/wgrib2 && \
+    ln -s /usr/local/bin/python/wgrib2 /usr/local/bin/wgrib2
 
 # Grant execute permission to wgrib2
 RUN chmod +x /usr/local/bin/python/wgrib2
