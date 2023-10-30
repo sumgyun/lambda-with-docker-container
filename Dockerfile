@@ -15,11 +15,10 @@ RUN pip install \
     --target ${FUNCTION_DIR} \
         awslambdaric
 
-# Install additional packages
-RUN apt-get -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-RUN apt-get update && apt-get install -y \
-    wgrib \
-    git
+# install wgrib
+RUN apt-get update
+RUN apt-get install -y wgrib
+RUN apt-get install -y git
 
 # Clone the specified GitHub repository
 RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git
