@@ -16,6 +16,7 @@ RUN pip install \
         awslambdaric
 
 # Install additional packages
+RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN apt-get update && apt-get install -y \
     wgrib \
     git
