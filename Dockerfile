@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/python:3.8 as lambda-image
+FROM public.ecr.aws/lambda/python:3.10 as lambda-image
 
 # 사용할 환경 : Amazon Linux 2
 FROM amazonlinux:2
