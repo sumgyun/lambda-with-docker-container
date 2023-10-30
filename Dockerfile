@@ -23,6 +23,8 @@ RUN apt-get update && \
         cmake \
         gfortran
 
+ENV FC=gfortran
+
 # Download and build wgrib
 RUN wget ftp://ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/wgrib2.tgz.v3.1.3 -O wgrib2.tgz&& \
     tar -zxvf wgrib2.tgz && \
