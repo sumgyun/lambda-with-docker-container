@@ -9,7 +9,6 @@ ARG FUNCTION_DIR
 # Copy function code
 RUN mkdir -p ${FUNCTION_DIR}
 COPY . ${FUNCTION_DIR}
-RUN mkdir -p /usr/local/bin/python/wgrib2
 
 # Install the function's dependencies
 RUN pip install \
@@ -27,6 +26,8 @@ RUN apt-get update && \
 
 ENV FC=gfortran
 ENV CC=gcc
+
+RUN mkdir -p /usr/local/bin/python/wgrib2
 
 # Download and build wgrib
 WORKDIR ${FUNCTION_DIR}
