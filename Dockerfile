@@ -19,11 +19,11 @@ RUN apt-get update
 RUN apt-get install -y git
 
 # Download and build wgrib
-RUN wget https://www.ftp.cpc.ncep.noaa.gov/wd51we/wgrib/wgrib.tar.gz && \
-    tar -zxvf wgrib.tar.gz && \
+RUN wget https://www.ftp.cpc.ncep.noaa.gov/htdocs/wd51we/wgrib2/wgrib2.tgz && \
+    tar -zxvf wgrib2.tgz && \
     cd grib2 && \
     make && \
-    mv wgrib2/wgrib2 /usr/local/bin/wgrib2
+    mv wgrib2 /usr/local/bin/wgrib2
 
 # Clone the specified GitHub repository
 RUN git clone https://github.com/sumgyun/lambda-with-docker-container.git
