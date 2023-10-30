@@ -20,7 +20,7 @@ RUN mkdir -p ${FUNCTION_DIR}
 COPY . ${FUNCTION_DIR}
 
 # Install the function's dependencies
-RUN pip install -m pip install \
+RUN -m pip install \
     --target ${FUNCTION_DIR} \
     --no-cache-dir \
         awslambdaric \
