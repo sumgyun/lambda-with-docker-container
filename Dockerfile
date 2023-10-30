@@ -22,7 +22,6 @@ COPY . ${FUNCTION_DIR}
 # Install the function's dependencies
 RUN -m pip install \
     --target ${FUNCTION_DIR} \
-    --no-cache-dir \
         awslambdaric \
     -r ${FUNCTION_DIR}/requirements.txt
 
