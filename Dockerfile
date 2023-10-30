@@ -20,7 +20,7 @@ RUN mkdir -p ${FUNCTION_DIR}
 COPY . ${FUNCTION_DIR}
 
 # Install the function's dependencies
-RUN -m pip install \
+RUN python:3.11 -m pip install \
     --target ${FUNCTION_DIR} \
         awslambdaric \
     -r ${FUNCTION_DIR}/requirements.txt
