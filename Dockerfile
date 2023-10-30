@@ -9,7 +9,7 @@ ARG FUNCTION_DIR
 # Copy function code
 RUN mkdir -p ${FUNCTION_DIR}
 COPY . ${FUNCTION_DIR}
-RUN mkdir /usr/local/bin/python
+RUN mkdir -p /usr/local/bin/python/wgrib2
 
 # Install the function's dependencies
 RUN pip install \
