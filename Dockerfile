@@ -20,7 +20,9 @@ RUN yum install -y git
 RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum -y install wgrib
 
-RUN type wgrib2
+# 확인
+RUN which wgrib2
+RUN command -v wgrib2
 
 # give execute permission to wgrib2
 RUN chmod +x /usr/local/bin/wgrib2
